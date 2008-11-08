@@ -17,9 +17,9 @@ echo "VEROOT: $VEROOT"
 echo "Is this fine? (y/n)"
 
 read safetypin
-if [ $safetypin!="y" ]; then
-	echo "Aboritng at your discretion"
-	exit 1
+if [ "$safetypin" != "y" ]; then
+        echo "Aborting at your discretion"
+        exit 1
 fi
 
 check_rc() {
