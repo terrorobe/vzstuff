@@ -22,7 +22,7 @@ exit
 
 check_rc() {
 RC=$?
-if [ $RC -gt 0 ]; then
+if [ $RC -ne 0 ]; then
         echo "Failed in $1, RC was $RC. Bailing out"
         exit 1
 fi
