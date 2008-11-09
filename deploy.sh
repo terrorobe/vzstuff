@@ -3,6 +3,16 @@
 # This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
 # Author: Michael Renner
 
+# Global Configuration
+
+# Nullmailer default delivery address
+ADMINADDR="robe@amd.co.at"
+#DNS Recursor for VE config
+RECURSOR=172.16.42.1
+#Smarthost for Mail delivery
+SMARTHOST=172.16.42.1
+
+
 if [ $# -ne  3 ]; then
 	echo "Usage: $0 <VEID> <Hostname> <IP-Address>"
 	exit 1
@@ -36,11 +46,11 @@ fi
 # This is needed so that etckeeper doesn't complain about nonexisting locales
 unset LANG
  
-vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate debian-4.1-bootstrap --nameserver 172.16.42.1
+vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate debian-4.1-bootstrap --nameserver $RECURSOR
 check_rc "vzctl create"
 
 echo "Bootstrapping silently"
-debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11 --include=vim,mailx,mtr-tiny,screen,strace,ltrace,telnet,dnsutils,file,less,iptraf,lsof,rsync,unattended-upgrades,etckeeper --arch amd64 lenny $VEROOT http://ftp.at.debian.org/debian > /dev/null
+debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11 --include=vim,mailx,mtr-tiny,screen,strace,ltrace,telnet,dnsutils,file,less,iptraf,lsof,rsync,unattended-upgrades,etckeeper,nullmailer --arch amd64 lenny $VEROOT http://ftp.at.debian.org/debian > /dev/null
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
@@ -67,8 +77,14 @@ EOF
 check_rc "Writing etckeeper script"
 
 echo "Setting up etckeeper"
-chroot /var/lib/vz/private/$VEID /bin/bash /root/etckickoff.sh > /dev/null
+chroot $VEROOT /bin/bash /root/etckickoff.sh > /dev/null
 check_rc "Executing etckeeper script"
+
+echo "Setting up nullmailer"
+echo "robe@amd.co.at" > $VEROOT/etc/nullmailer/adminaddr
+check_rc "Setting nullmailer adminaddr"
+echo $SMARTHOST > /etc/nullmailer/remotes
+check_rc "Setting nullmailer remotes"
 
 
 #Removing etckeeper setup and template dummy files
