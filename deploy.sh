@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
+# Author: Michael Renner
+
 if [ $# -ne  3 ]; then
 	echo "Usage: $0 <VEID> <Hostname> <IP-Address>"
 	exit 1
@@ -33,7 +36,7 @@ fi
 # This is needed so that etckeeper doesn't complain about nonexisting locales
 unset LANG
  
-vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate debian-4.1-bootstrap
+vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate debian-4.1-bootstrap --nameserver 172.16.42.1
 check_rc "vzctl create"
 
 echo "Bootstrapping silently"
@@ -51,6 +54,9 @@ APT::Periodic::Unattended-Upgrade "1";
 APT::Periodic::AuotcleanInterval 60;
 EOF
 check_rc "Editing apt.conf"
+
+echo -e "\n\ndeb http://security.debian.org/ lenny/updates main\n" >> $VEROOT/etc/apt/sources.list
+check_rc "Editing sources.list"
 
 cat << EOF >> $VEROOT/root/etckickoff.sh
 #!/bin/bash
