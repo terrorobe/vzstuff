@@ -87,7 +87,8 @@ echo "robe@amd.co.at" > $VEROOT/etc/nullmailer/adminaddr
 check_rc "Setting nullmailer adminaddr"
 echo $SMARTHOST > $VEROOT/etc/nullmailer/remotes
 check_rc "Setting nullmailer remotes"
-
+echo $HN > $VEROOT/etc/mailname
+check_rc "Setting mailname"
 
 #Removing etckeeper setup and template dummy files
 rm $VEROOT/INSTANCEd $VEROOT/root/etckickoff.sh
