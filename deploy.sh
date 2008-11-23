@@ -63,7 +63,7 @@ check_rc "inittab edit"
 cat << EOF >> $VEROOT/etc/apt/apt.conf
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
-APT::Periodic::AuotcleanInterval 60;
+APT::Periodic::AutocleanInterval 60;
 EOF
 check_rc "Editing apt.conf"
 
