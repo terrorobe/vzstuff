@@ -98,7 +98,7 @@ check_rc "Writing etckeeper script"
 
 
 echo "Setting up nullmailer"
-echo "robe@amd.co.at" > $VEROOT/etc/nullmailer/adminaddr
+echo $ADMINADDR > $VEROOT/etc/nullmailer/adminaddr
 check_rc "Setting nullmailer adminaddr"
 echo $SMARTHOST > $VEROOT/etc/nullmailer/remotes
 check_rc "Setting nullmailer remotes"
