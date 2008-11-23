@@ -74,7 +74,7 @@ debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-ba
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
-perl -pi -e 's§^(?!#)(.*/sbin/getty)§#$1§' $VEROOT/etc/inittab
+perl -pi -e 's|^(?!#)(.*/sbin/getty)|#$1|' $VEROOT/etc/inittab
 check_rc "inittab edit"
 
 #Unattended upgrades settings
