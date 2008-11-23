@@ -74,7 +74,7 @@ debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-ba
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
-perl -pi -e 's\^(?!#)(.*/sbin/getty)\#$1\' $VEROOT/etc/inittab
+perl -pi -e 's§^(?!#)(.*/sbin/getty)§#$1§' $VEROOT/etc/inittab
 check_rc "inittab edit"
 
 #Unattended upgrades settings
@@ -96,9 +96,6 @@ git commit -a -m "initial commit"
 EOF
 check_rc "Writing etckeeper script"
 
-echo "Setting up etckeeper"
-chroot $VEROOT /bin/bash /root/etckickoff.sh > /dev/null
-check_rc "Executing etckeeper script"
 
 echo "Setting up nullmailer"
 echo "robe@amd.co.at" > $VEROOT/etc/nullmailer/adminaddr
@@ -108,7 +105,14 @@ check_rc "Setting nullmailer remotes"
 echo $HN > $VEROOT/etc/mailname
 check_rc "Setting mailname"
 
+#This should be done pretty much at the end since it does the inital commit of the /etc directory
+echo "Setting up etckeeper"
+chroot $VEROOT /bin/bash /root/etckickoff.sh > /dev/null
+check_rc "Executing etckeeper script"
+
+
 #Removing etckeeper setup and template dummy files
+#FIXME: the 'INSTANCEd' file only exists in my own tarball..
 rm $VEROOT/INSTANCEd $VEROOT/root/etckickoff.sh
 check_rc "Deleting setup files"
 
