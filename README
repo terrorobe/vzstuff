@@ -1,0 +1,21 @@
+        deploy.sh - A Debian OpenVZ instance creator
+
+What is this?
+=============
+
+deploy.sh is a small hack which evolved into a shellscript which aids in
+deploying Debian OpenVZ instances.
+
+It creates a new VE with empty private area, bootstraps a Debian Lenny system,
+and then sets up apt, etckeeper and nullmailer so that the new instance is
+instantly useable for production.
+
+Installation
+============
+
+Requirements:
+
+*) bash
+*) vzctl
+*) debootstrap
+
