@@ -1,0 +1,6 @@
+# Nullmailer default delivery address
+ADMINADDR="root@example.org"
+#DNS Recursor for VE config
+RECURSOR=172.16.42.1
+#Smarthost for Mail delivery
+SMARTHOST=172.16.42.1

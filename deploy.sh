@@ -3,15 +3,30 @@
 # This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
 # Author: Michael Renner
 
-# Global Configuration
+CONFIGFILE=`dirname $PWD/$0`/deploy.conf
 
-# Nullmailer default delivery address
-ADMINADDR="robe@amd.co.at"
-#DNS Recursor for VE config
-RECURSOR=172.16.42.1
-#Smarthost for Mail delivery
-SMARTHOST=172.16.42.1
+if [ ! -f $CONFIGFILE ]; then
+        echo "Please create a file named 'deploy.conf' in the same directory as the script"
+        echo "and make sure that the variables ADMINADDR, RECURSOR and SMARTHOST are set"
+        exit 1
+fi
 
+source $CONFIGFILE
+
+if [ "${ADMINADDR+set}" != set ]; then
+        echo "ADMINADDR is not set. Please check '$CONFIGFILE'"
+        exit 1
+fi
+
+if [ "${RECURSOR+set}" != set ]; then
+        echo "RECURSOR is not set. Please check '$CONFIGFILE'"
+        exit 1
+fi
+
+if [ "${SMARTHOST+set}" != set ]; then
+        echo "SMARTHOST is not set. Please check '$CONFIGFILE'"
+        exit 1
+fi
 
 if [ $# -ne  3 ]; then
 	echo "Usage: $0 <VEID> <Hostname> <IP-Address>"
@@ -27,6 +42,9 @@ echo "VEID: $VEID"
 echo "Hostname: $HN"
 echo "IP: $IP"
 echo "VEROOT: $VEROOT"
+echo "ADMINADDR: $ADMINADDR"
+echo "RECURSOR: $RECURSOR"
+echo "SMARTHOST: $SMARTHOST"
 echo "Is this fine? (y/n)"
 
 read safetypin
