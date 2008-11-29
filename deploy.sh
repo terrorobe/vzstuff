@@ -35,8 +35,8 @@ HN=$2
 IP=$3
 
 fetch_vz_setting "VE_PRIVATE"
-# Bash apparently can't dereference a string without using source
-VEROOT=`echo $VZCONFVALUE | sed s/\$.*//`$VEID
+# interpolating strings, bash-style
+VEROOT=`eval echo $VZCONFVALUE`
 
 echo "VEID: $VEID"
 echo "Hostname: $HN"
