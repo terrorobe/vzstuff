@@ -46,11 +46,11 @@ Updates
 Distribution of this software is currently done solely via mercurial. If you have
 received the software via mercurial you can update it with a simple
 
-hg pull && hg update -r stable
+hg pull && hg update
 
 If you need to do a fresh checkout you can do that with
 
-hg clone -r stable https://workbench.amd.co.at/hg/vzstuff/
+hg clone https://workbench.amd.co.at/hg/vzstuff/
 
 
 Author
