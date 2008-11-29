@@ -5,7 +5,8 @@
 
 SCRIPTDIR=`dirname $PWD/$0`
 CONFIGFILE=$SCRIPTDIR/deploy.conf
-VZCONF=/etc/vz/vz.conf
+VZCONFDIR=/etc/vz
+VZCONF=$VZCONFDIR/vz.conf
 
 if [ ! -f $CONFIGFILE ]; then
         echo "Please create a file named 'deploy.conf' in the same directory as the script"
@@ -22,11 +23,18 @@ check_settings
 
 
 if [ "$1" == "setup" ]; then
+	echo "I am going to create the OpenVZ template and distribution $DEPLOTYTEMPLATE."
+	echo "Is this fine? (y/n)"
+	prompt_user
 	create_template
+	create_dist
+	echo "Successfully created $DELOYTEMPLATE"
 fi
 
 if [ $# -ne  3 ]; then
 	echo "Usage: $0 <VEID> <Hostname> <IP-Address>"
+	echo "or to create the needed template and distribution:"
+	echo "Usage: $0 setup"
 	exit 1
 fi
 
@@ -102,8 +110,7 @@ check_rc "Executing etckeeper script"
 
 
 #Removing etckeeper setup and template dummy files
-#FIXME: the 'INSTANCEd' file only exists in my own tarball..
-rm $VEROOT/INSTANCEd $VEROOT/root/etckickoff.sh
+rm $VEROOT/BOOTSTRAPPED $VEROOT/root/etckickoff.sh
 check_rc "Deleting setup files"
 
 echo "We completed successfully."

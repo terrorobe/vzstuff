@@ -48,5 +48,38 @@ VZCONFVALUE=`grep -m1 ^$1= $VZCONF | cut -f2- -d"="`
 }
 
 create_template() {
-/bin/false
+
+fetch_vz_setting "TEMPLATE"
+TEMPLATEDIR=$VZCONFVALUE
+TARGETFILE=$TEMPLATEDIR/cache/$DEPLOYTEMPLATE.tar.gz
+if [ -f $TARGETFILE ]; then
+	echo "$TARGETFILE already exists. Skipping template creation."
+	return
+fi
+
+TEMPDIR=`mktemp -d` || exit 1
+TEMPFILE=`mktemp` || exit 1
+
+# We need a file in the tarball since vzcreate barfs on empty tarballs
+touch $TEMPDIR/BOOTSTRAPPED
+tar -c -C $TEMPDIR . -f $TEMPFILE
+
+mv $TEMPFILE $TARGETFILE
+
+rm $TEMPDIR/BOOTSTRAPPED
+rmdir $TEMPDIR
+}
+
+create_dist() {
+
+SOURCEFILE=$VZCONFDIR/dists/debian.conf
+TARGETFILE=$VZCONFDIR/dists/$DEPLOYTEMPLATE.conf
+if [ -a $TARGETFILE ]; then
+
+	echo "$TARGETFILE already exists. Skipping dists creation."
+	return
+fi
+
+cp $SOURCEFILE $TARGETFILE
+
 }
