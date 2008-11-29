@@ -36,3 +36,23 @@ This creates the needed OpenVZ template and distribution files.
 To create a new instance:
 
 ./deploy.sh 4711 water.cologne.de 50.56.18.6
+
+
+
+Updates
+=======
+
+Distribution of this software is currently done solely via mercurial. If you have
+received the software via mercurial you can update it with a simple
+
+hg pull && hg update -r stable
+
+If you need to do a fresh checkout you can do that with
+
+hg clone -r stable https://workbench.amd.co.at/hg/vzstuff/
+
+
+Author
+======
+
+Michael Renner <michael.renner@amd.co.at>
