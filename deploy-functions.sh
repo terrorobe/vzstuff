@@ -62,7 +62,7 @@ TEMPFILE=`mktemp` || exit 1
 
 # We need a file in the tarball since vzcreate barfs on empty tarballs
 touch $TEMPDIR/BOOTSTRAPPED
-tar -c -C $TEMPDIR . -f $TEMPFILE
+tar -zc -C $TEMPDIR . -f $TEMPFILE
 
 mv $TEMPFILE $TARGETFILE
 

@@ -23,12 +23,13 @@ check_settings
 
 
 if [ "$1" == "setup" ]; then
-	echo "I am going to create the OpenVZ template and distribution $DEPLOTYTEMPLATE."
+	echo "I am going to create the OpenVZ template and distribution $DEPLOYTEMPLATE."
 	echo "Is this fine? (y/n)"
 	prompt_user
 	create_template
 	create_dist
-	echo "Successfully created $DELOYTEMPLATE"
+	echo "Successfully created $DEPLOYTEMPLATE"
+	exit 0
 fi
 
 if [ $# -ne  3 ]; then
