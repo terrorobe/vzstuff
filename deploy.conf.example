@@ -4,3 +4,5 @@ ADMINADDR="root@example.org"
 RECURSOR=172.16.42.1
 #Smarthost for Mail delivery
 SMARTHOST=172.16.42.1
+#Default Template to deploy. This needs to be empty.
+DEPLOYTEMPLATE="debian-4.1-bootstrap"

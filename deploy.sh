@@ -3,29 +3,26 @@
 # This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
 # Author: Michael Renner
 
-CONFIGFILE=`dirname $PWD/$0`/deploy.conf
+SCRIPTDIR=`dirname $PWD/$0`
+CONFIGFILE=$SCRIPTDIR/deploy.conf
+VZCONF=/etc/vz/vz.conf
 
 if [ ! -f $CONFIGFILE ]; then
         echo "Please create a file named 'deploy.conf' in the same directory as the script"
-        echo "and make sure that the variables ADMINADDR, RECURSOR and SMARTHOST are set"
+        echo "and make sure that the variables ADMINADDR, RECURSOR, SMARTHOST and"
+	echo "DEPLOYTEMPLATE are set"
         exit 1
 fi
 
 source $CONFIGFILE
 
-if [ "${ADMINADDR+set}" != set ]; then
-        echo "ADMINADDR is not set. Please check '$CONFIGFILE'"
-        exit 1
-fi
+source $SCRIPTDIR/deploy-functions.sh
 
-if [ "${RECURSOR+set}" != set ]; then
-        echo "RECURSOR is not set. Please check '$CONFIGFILE'"
-        exit 1
-fi
+check_settings
 
-if [ "${SMARTHOST+set}" != set ]; then
-        echo "SMARTHOST is not set. Please check '$CONFIGFILE'"
-        exit 1
+
+if [ "$1" == "setup" ]; then
+	create_template
 fi
 
 if [ $# -ne  3 ]; then
@@ -36,7 +33,10 @@ fi
 VEID=$1
 HN=$2
 IP=$3
-VEROOT=/var/lib/vz/private/$VEID
+
+fetch_vz_setting "VE_PRIVATE"
+# Bash apparently can't dereference a string without using source
+VEROOT=`echo $VZCONFVALUE | sed s/\$.*//`$VEID
 
 echo "VEID: $VEID"
 echo "Hostname: $HN"
@@ -47,19 +47,9 @@ echo "RECURSOR: $RECURSOR"
 echo "SMARTHOST: $SMARTHOST"
 echo "Is this fine? (y/n)"
 
-read safetypin
-if [ "$safetypin" != "y" ]; then
-        echo "Aborting at your discretion"
-        exit 1
-fi
 
-check_rc() {
-RC=$?
-if [ $RC -ne 0 ]; then
-        echo "Failed in $1, RC was $RC. Bailing out"
-        exit 1
-fi
-}
+prompt_user
+
 
 # This is needed so that etckeeper doesn't complain about nonexisting locales
 unset LANG
