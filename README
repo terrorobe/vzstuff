@@ -6,7 +6,7 @@ What is this?
 deploy.sh is a small hack which evolved into a shellscript which aids in
 deploying Debian OpenVZ instances.
 
-It creates a new VE with empty private area, bootstraps a Debian Lenny system,
+It creates a new VE with an empty private area, bootstraps a Debian Lenny system,
 and then sets up apt, etckeeper and nullmailer so that the new instance is
 instantly useable for production.
 
@@ -15,7 +15,24 @@ Installation
 
 Requirements:
 
+*) A working OpenVZ Hardwarenode (only tested with Debian Lenny as HN-OS) 
 *) bash
 *) vzctl
 *) debootstrap
+*) tar
+*) mktemp
 
+
+Usage
+=====
+
+At first startup:
+
+./deploy.sh setup
+
+This creates the needed OpenVZ template and distribution files.
+
+
+To create a new instance:
+
+./deploy.sh 4711 water.cologne.de 50.56.18.6

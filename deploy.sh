@@ -9,9 +9,8 @@ VZCONFDIR=/etc/vz
 VZCONF=$VZCONFDIR/vz.conf
 
 if [ ! -f $CONFIGFILE ]; then
-        echo "Please create a file named 'deploy.conf' in the same directory as the script"
-        echo "and make sure that the variables ADMINADDR, RECURSOR, SMARTHOST and"
-	echo "DEPLOYTEMPLATE are set"
+        echo "Please create a file named 'deploy.conf' in the same directory as the script."
+        echo "See deploy.conf.example for needed parameters."
         exit 1
 fi
 
@@ -69,7 +68,7 @@ vzctl set $VEID --save --nameserver $RECURSOR
 check_rc "vzctl set nameserver"
 
 echo "Bootstrapping silently"
-debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11 --include=vim,mtr-tiny,screen,strace,ltrace,telnet,dnsutils,file,less,iptraf,lsof,rsync,unattended-upgrades,etckeeper,nullmailer --arch amd64 lenny $VEROOT http://ftp.at.debian.org/debian > /dev/null
+debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11 --include=vim,mtr-tiny,screen,strace,ltrace,telnet,dnsutils,file,less,iptraf,lsof,rsync,unattended-upgrades,etckeeper,nullmailer --arch amd64 lenny $VEROOT $DEBMIRROR > /dev/null
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
@@ -92,6 +91,7 @@ cat << EOF >> $VEROOT/root/etckickoff.sh
 etckeeper init
 cd /etc
 git commit -a -m "initial commit"
+apt-get update
 EOF
 check_rc "Writing etckeeper script"
 
@@ -105,7 +105,7 @@ echo $HN > $VEROOT/etc/mailname
 check_rc "Setting mailname"
 
 #This should be done pretty much at the end since it does the inital commit of the /etc directory
-echo "Setting up etckeeper"
+echo "Setting up etckeeper, invoking post-install commands"
 chroot $VEROOT /bin/bash /root/etckickoff.sh > /dev/null
 check_rc "Executing etckeeper script"
 

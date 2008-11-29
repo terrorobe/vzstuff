@@ -3,6 +3,8 @@ ADMINADDR="root@example.org"
 #DNS Recursor for VE config
 RECURSOR=172.16.42.1
 #Smarthost for Mail delivery
-SMARTHOST=172.16.42.1
-#Default Template to deploy. This needs to be empty.
+SMARTHOST=smtp.example.org
+#Template name used during deployment
 DEPLOYTEMPLATE="debian-4.1-bootstrap"
+#Debian Mirror to use
+DEBMIRROR=http://ftp.at.debian.org/debian

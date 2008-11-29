@@ -22,6 +22,11 @@ if [ "${DEPLOYTEMPLATE+set}" != set ]; then
         exit 1
 fi
 
+if [ "${DEBMIRROR+set}" != set ]; then
+        echo "DEBMIRROR is not set. Please check '$CONFIGFILE'"
+        exit 1
+fi
+
 }
 
 
