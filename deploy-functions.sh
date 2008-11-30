@@ -28,6 +28,11 @@ if [ "${DEBMIRROR+set}" != set ]; then
         exit 1
 fi
 
+if [ "${DEBARCH+set}" != set ]; then
+        echo "DEBARCH is not set. Please check '$CONFIGFILE'"
+        exit 1
+fi
+
 }
 
 

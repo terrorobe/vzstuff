@@ -67,8 +67,12 @@ check_rc "vzctl create"
 vzctl set $VEID --save --nameserver $RECURSOR
 check_rc "vzctl set nameserver"
 
+if [ -n "$INCLUDEPACKAGE" ]; then
+        INCLUDEPACKAGE="$INCLUDEPACKAGE,"
+fi
+
 echo "Bootstrapping silently"
-debootstrap --exclude=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11 --include=vim,mtr-tiny,screen,strace,ltrace,telnet,dnsutils,file,less,iptraf,lsof,rsync,unattended-upgrades,etckeeper,nullmailer --arch amd64 lenny $VEROOT $DEBMIRROR > /dev/null
+debootstrap --exclude=$EXCLUDEPACKAGE --include=${INCLUDEPACKAGE}unattended-upgrades,etckeeper,nullmailer --arch $DEBARCH lenny $VEROOT $DEBMIRROR > /dev/null
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
@@ -115,5 +119,3 @@ rm $VEROOT/BOOTSTRAPPED $VEROOT/root/etckickoff.sh
 check_rc "Deleting setup files"
 
 echo "We completed successfully."
-
-

@@ -1,10 +1,23 @@
 # Nullmailer default delivery address
 ADMINADDR="root@example.org"
+
 #DNS Recursor for VE config
 RECURSOR=172.16.42.1
+
 #Smarthost for Mail delivery
 SMARTHOST=smtp.example.org
+
 #Template name used during deployment
 DEPLOYTEMPLATE="debian-4.1-bootstrap"
+
 #Debian Mirror to use
 DEBMIRROR=http://ftp.at.debian.org/debian
+
+#Packages to exclude (suitable for Debian Lenny/Sid in this example)
+EXCLUDEPACKAGE=dhcp-client,dhcp3-client,dhcp3-common,dmidecode,gcc-4.2-base,nano,module-init-tools,tasksel,tasksel-data,libdb4.4,libsasl2-2,libgnutls26,libconsole,libgnutls13,libtasn1-3,liblzo2-2,libopencdk10,libgcrypt11
+
+#Packages to include
+INCLUDEPACKAGE=vim,screen,file,less,lsof,strace,ltrace,telnet,mtr-tiny,dnsutils,tcpdump
+
+#Debian architecture to use
+DEBARCH=amd64
