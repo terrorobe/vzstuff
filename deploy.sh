@@ -62,7 +62,7 @@ prompt_user
 # This is needed so that etckeeper doesn't complain about nonexisting locales
 unset LANG
  
-vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate debian-4.1-bootstrap
+vzctl create $VEID --ipadd $IP --hostname $HN --ostemplate "${DEPLOYTEMPLATE}"
 check_rc "vzctl create"
 vzctl set $VEID --save --nameserver $RECURSOR
 check_rc "vzctl set nameserver"
