@@ -15,7 +15,8 @@ Installation
 
 Requirements:
 
-*) A working OpenVZ Hardwarenode (only tested with Debian Lenny as HN-OS) 
+*) A working OpenVZ Hardwarenode (only tested with Debian Lenny
+   and Debian Squeeze as HN-OS)
 *) bash
 *) vzctl
 *) debootstrap
@@ -43,14 +44,14 @@ To create a new instance:
 Updates
 =======
 
-Distribution of this software is currently done solely via mercurial. If you have
+Distribution of this software is currently done solely via git. If you have
 received the software via mercurial you can update it with a simple
 
-hg pull && hg update
+git pull
 
 If you need to do a fresh checkout you can do that with
 
-hg clone https://workbench.amd.co.at/hg/vzstuff/
+git clone git://github.com/terrorobe/vzstuff.git
 
 
 Author
