@@ -97,9 +97,11 @@ check_rc "Editing sources.list"
 
 cat << EOF >> $VEROOT/root/etckickoff.sh
 #!/bin/bash
+git config --global user.name root
+git config --global user.email root@$HN
 etckeeper init
 cd /etc
-git commit -a -m "initial commit"
+git commit -a -m "Finished bootstrapping"
 apt-get update
 EOF
 check_rc "Writing etckeeper script"
