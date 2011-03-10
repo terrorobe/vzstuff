@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
+# This scripts creates an OpenVZ VE and bootstraps a Debian system to the given _empty_ private area
 # (c) 2008-2011, Michael Renner
 
 SCRIPTDIR=`dirname $PWD/$0`
@@ -71,8 +71,13 @@ if [ -n "$INCLUDEPACKAGE" ]; then
         INCLUDEPACKAGE="$INCLUDEPACKAGE,"
 fi
 
+# only supply option if we've got packages to exclude
+if [ -n "$EXCLUDEPACKAGE" ]; then
+	EXCLUDEPACKAGE="--exclude=$EXCLUDEPACKAGE"
+fi
+
 echo "Bootstrapping silently"
-debootstrap --exclude=$EXCLUDEPACKAGE --include=${INCLUDEPACKAGE}unattended-upgrades,etckeeper,nullmailer --arch $DEBARCH lenny $VEROOT $DEBMIRROR > /dev/null
+debootstrap $EXCLUDEPACKAGE --include=${INCLUDEPACKAGE}unattended-upgrades,etckeeper,nullmailer --arch $DEBARCH $DEBSUITE $VEROOT $DEBMIRROR > /dev/null
 check_rc "debootstrap"
 
 #Removing gettys from inittab, since they are of no use in a VE
@@ -87,7 +92,7 @@ APT::Periodic::AutocleanInterval "60";
 EOF
 check_rc "Editing apt.conf"
 
-echo -e "\n\ndeb http://security.debian.org/ lenny/updates main\n" >> $VEROOT/etc/apt/sources.list
+echo -e "\n\ndeb http://security.debian.org/ $DEBSUITE/updates main\n" >> $VEROOT/etc/apt/sources.list
 check_rc "Editing sources.list"
 
 cat << EOF >> $VEROOT/root/etckickoff.sh
