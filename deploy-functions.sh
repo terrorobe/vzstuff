@@ -85,7 +85,7 @@ create_dist() {
 
 SOURCEFILE=$VZCONFDIR/dists/debian.conf
 TARGETFILE=$VZCONFDIR/dists/$DEPLOYTEMPLATE.conf
-if [ -a $TARGETFILE ]; then
+if [ -f $TARGETFILE ]; then
 
 	echo "$TARGETFILE already exists. Skipping dists creation."
 	return
