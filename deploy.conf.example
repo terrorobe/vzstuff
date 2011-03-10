@@ -2,7 +2,7 @@
 ADMINADDR="root@example.org"
 
 #DNS Recursor for VE config
-RECURSOR=172.16.42.1
+RECURSOR=8.8.8.8
 
 #Smarthost for Mail delivery
 SMARTHOST=smtp.example.org
@@ -11,7 +11,7 @@ SMARTHOST=smtp.example.org
 DEPLOYTEMPLATE="debian-6.0-bootstrap"
 
 #Debian Mirror to use
-DEBMIRROR=http://ftp.at.debian.org/debian
+DEBMIRROR=http://cdn.debian.net/debian
 
 #Packages to exclude (suitable for Debian Squeeze in this example)
 EXCLUDEPACKAGE=isc-dhcp-client,isc-dhcp-common,dmidecode,nano,module-init-tools,tasksel,tasksel-data
