@@ -1,5 +1,5 @@
 # These are helper functions for deploy.sh
-# (c) 2008, Michael Renner
+# (c) 2008-2011, Michael Renner
 
 check_settings() {
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This scripts creates an OpenVZ VE and bootstraps a Debian lenny system to the given _empty_ private area
-# (c) 2008, Michael Renner
+# (c) 2008-2011, Michael Renner
 
 SCRIPTDIR=`dirname $PWD/$0`
 CONFIGFILE=$SCRIPTDIR/deploy.conf
